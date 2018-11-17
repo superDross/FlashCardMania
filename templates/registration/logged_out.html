@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+{# Successful logout message #}
+
+{% block content %}
+<div class="ui cards" style="padding-top: 1em;padding-left: 1em">
+  <div class="card">
+    <div class="content">
+      <div class="description">
+        <h2>Logged out!</h2>
+        <div class="meta">
+          <a href="{% url 'login'%}" style="color: cornflowerblue">Click here to login again.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

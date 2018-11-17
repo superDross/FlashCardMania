@@ -55,6 +55,11 @@ class FlashCard(models.Model):
 class GameInstance(models.Model):
     ''' Instance of a flash card game.'''
 
+    TYPES = (
+        ('c', 'Multiple Choice'),
+        ('w', 'Writing')
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           editable=False, unique=True)
     participant = models.ForeignKey(User,
@@ -63,12 +68,20 @@ class GameInstance(models.Model):
                                     blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
-    cards = models.ManyToManyField(FlashCard)
+    cards = models.ManyToManyField(FlashCard,
+                                   help_text='all cards used in game.')
     score = models.IntegerField(
         validators=[
             MaxValueValidator(100),
             MinValueValidator(1)
-        ]
+        ],
+        help_text='percentage of correct answers in game.'
+    )
+    type = models.CharField(
+        max_length=50,
+        choices=TYPES,
+        blank=True,
+        help_text='type of game played'
     )
 
     def __str__(self):
