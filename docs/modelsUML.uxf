@@ -24,11 +24,12 @@
 --
 +question: String
 +answer: String
-+class: Classification
++class: Classification[1]
 +image: ImageField
 +audio: FileField
 +owner: Profile[1]
 +level: LEVELS
++type: TYPES
 --
 +__str__: String</panel_attributes>
     <additional_attributes/>

@@ -16,6 +16,10 @@ class FlashCard(models.Model):
     ''' Represents a single flash card.'''
 
     LEVELS = tuple((x, x) for x in range(1, 101))
+    TYPES = (
+        ('s', 'Short'),
+        ('l', 'Long'),
+    )
 
     created_by = models.ForeignKey(User,
                                    on_delete=models.SET_NULL,
@@ -26,10 +30,20 @@ class FlashCard(models.Model):
     category = models.ForeignKey(Category,
                                  on_delete=models.SET_NULL,
                                  null=True,
-                                 blank=True)
-    image = models.ImageField(upload_to='image_files/')
-    audio = models.FileField(upload_to='audio_files/')
-    level = models.IntegerField(choices=LEVELS)
+                                 blank=True,
+                                 help_text='category in which the flash card belongs.')
+    image = models.ImageField(upload_to='image_files/',
+                              help_text='image representation of the question.')
+    audio = models.FileField(upload_to='audio_files/',
+                             help_text='audio representation of the question.')
+    level = models.IntegerField(choices=LEVELS,
+                                help_text='difficulty level.')
+    type = models.CharField(
+        max_length=20,
+        choices=TYPES,
+        blank=True,
+        help_text='short or long charactered card.'
+    )
 
     def __str__(self):
         return self.pk
