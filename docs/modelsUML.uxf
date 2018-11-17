@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>220</x>
+      <y>50</y>
+      <w>60</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>User
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>70</y>
+      <w>210</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=0..*
+</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>30</y>
+      <w>230</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Card
+--
++question: String
++answer: String
++class: String
++image: ImageField
++audio: FileField
++owner: Profile[1]
++level: LEVELS
+--
++__str__: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>30</x>
+      <y>810</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>LEVEL
+--
+1
+2
+3
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
