@@ -1,5 +1,8 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Category(models.Model):
@@ -47,3 +50,26 @@ class FlashCard(models.Model):
 
     def __str__(self):
         return self.pk
+
+
+class GameInstance(models.Model):
+    ''' Instance of a flash card game.'''
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                          editable=False, unique=True)
+    participant = models.ForeignKey(User,
+                                    on_delete=models.SET_NULL,
+                                    null=True,
+                                    blank=True)
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
+    cards = models.ManyToManyField(FlashCard)
+    score = models.IntegerField(
+        validators=[
+            MaxValueValidator(100),
+            MinValueValidator(1)
+        ]
+    )
+
+    def __str__(self):
+        return f'{self.participant.username} - {self.date}, {self.time}'
