@@ -2,10 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FlashMania</title>
+  {% block title %}
+    <title>FlashMania</title>
+  {% endblock %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 </head>
 <body>
-  {% block content %} {% endblock %}
+  {% block sidebar %}
+    <div class="ui left visible sidebar">
+      <hr>
+     {% if user.is_authenticated %}
+       <li>User: {{ user.get_username }}</li>
+       <li><a href="{% url 'profile_page' %}">Profile</a></li>
+       <li><a href="{% url 'logout'%}">Logout</a></li>
+     {% else %}
+	     <li><a href="{% url 'login'%}">Login</a></li>
+	   {% endif %}
+     <hr>
+     <li><a href="{% url 'index' %}">Home</a></li>
+    </div>
+  {% endblock %}
+  <div class="pusher">
+    {% block content %}
+    {% endblock %}
+  </div>
 </body>
 </html>
