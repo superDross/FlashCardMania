@@ -2,6 +2,16 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Category(models.Model):
+    ''' A category of FlashCards e.g. Spanish'''
+
+    name = models.CharField(max_length=50,
+                            help_text='Name of category.')
+
+    def __str__(self):
+        return self.name
+
+
 class FlashCard(models.Model):
     ''' Represents a single flash card.'''
 
@@ -13,7 +23,10 @@ class FlashCard(models.Model):
                                    blank=True)
     question = models.CharField(max_length=200)
     answer = models.CharField(max_length=200)
-    category = models.CharField(max_length=100)
+    category = models.ForeignKey(Category,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
     image = models.ImageField(upload_to='image_files/')
     audio = models.FileField(upload_to='audio_files/')
     level = models.IntegerField(choices=LEVELS)
