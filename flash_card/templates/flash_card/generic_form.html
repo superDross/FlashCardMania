@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<div class="ui main text container centre aligned">
+  <div class="content">
+      <form class='ui form segment' method="post">{% csrf_token %}
+        <h1>{{ title }}</h1>
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+      </form>
+  </div>
+</div>
+
+{% endblock %}

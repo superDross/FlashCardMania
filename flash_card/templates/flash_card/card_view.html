@@ -1,0 +1,43 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<div class="ui main text container centre aligned card" style={{style}} >
+  <b><font size="1">
+    &nbsp
+    {{ card.category.name.title }}&nbsp&nbsp
+    {{ card.level }}&nbsp&nbsp
+  </font></b>
+  <div class="center aligned content">
+      <h2 class="ui header">Card Detail</h2><br/>
+      <div class="center aligned description">
+        <p>Question:  {{ card.question }}</p>
+        <p>Answer:  {{ card.answer }}</p>
+    </div>
+  </div>
+  <div class="extra content">
+    <font size="1">
+      Type: {{ card.get_type_display }}&nbsp&nbsp
+    </font>
+    {% if card.image %}
+      <font size="1">
+        Image: Yes &nbsp&nbsp
+      </font>
+    {% else %}
+      <font size="1">
+        Image: No &nbsp&nbsp
+      </font>
+    {% endif %}
+    {% if card.audio %}
+      <font size="1">
+        Audio: Yes &nbsp&nbsp
+      </font>
+    {% else %}
+      <font size="1">
+        Audio: No &nbsp&nbsp
+      </font>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

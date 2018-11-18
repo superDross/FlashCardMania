@@ -10,7 +10,10 @@ class Category(models.Model):
 
     name = models.CharField(max_length=50,
                             help_text='Name of category.')
-
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.SET_NULL,
+                                   null=True,
+                                   blank=True)
     def __str__(self):
         return self.name
 
@@ -18,7 +21,8 @@ class Category(models.Model):
 class FlashCard(models.Model):
     ''' Represents a single flash card.'''
 
-    LEVELS = tuple((x, x) for x in range(1, 101))
+    LEVELS = tuple((x, x) for x in range(1, 11))
+
     TYPES = (
         ('s', 'Short'),
         ('l', 'Long'),
@@ -35,21 +39,24 @@ class FlashCard(models.Model):
                                  null=True,
                                  blank=True,
                                  help_text='category in which the flash card belongs.')
-    image = models.ImageField(upload_to='image_files/',
+    image = models.ImageField(upload_to='tmp/',
+                              blank=True,
+                              null=True,
                               help_text='image representation of the question.')
-    audio = models.FileField(upload_to='audio_files/',
+    audio = models.FileField(upload_to='tmp/',
+                              blank=True,
+                              null=True,
                              help_text='audio representation of the question.')
     level = models.IntegerField(choices=LEVELS,
                                 help_text='difficulty level.')
     type = models.CharField(
         max_length=20,
         choices=TYPES,
-        blank=True,
         help_text='short or long charactered card.'
     )
 
     def __str__(self):
-        return self.pk
+        return f'{self.pk}'
 
 
 class GameInstance(models.Model):

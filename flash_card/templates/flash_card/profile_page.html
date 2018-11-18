@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<div class="ui main text container centre aligned">
+  <div class="content">
+    <div class="ui raised very padded text container segment">
+      <h2 class="ui header">Profile Details</h2>
+      <div class="description">
+        First Name:  {{ user.first_name }}<br/>
+        Last Name:  {{ user.last_name }}<br/>
+        User Name: {{ user.username }}<br/>
+        Email: {{ user.email }}<br/>
+      </div>
+    <div class="description">
+  </div>
+  </div>
+</div>
+
+{% endblock %}
