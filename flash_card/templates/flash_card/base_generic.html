@@ -1,30 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   {% block title %}
-    <title>FlashMania</title>
+    <title>Flash Mania</title>
   {% endblock %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'flash_card/styles.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/sidebar.js"></script>
+  <script type="text/javascript">
+    function main() {
+    $('.ui.left.sidebar').sidebar({
+        dimPage: false,
+        transition: 'push',
+        exclusive: false,
+        closable: false
+    });
+
+    $('.ui.left.sidebar')
+        .sidebar('attach events', '#hide-sidebar');
+    $('.ui.left.sidebar')
+        .sidebar('attach events', '#show-sidebar');
+    }
+    $(document).ready(main);
+  </script>
 </head>
+
 <body>
   {% block sidebar %}
-    <div class="ui left visible sidebar">
+    <div class="ui left vertical menu sidebar" >
+      <div id="hide-sidebar" class="button">
+        <image src="https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-24.png">
+      </div>
       <hr>
-     {% if user.is_authenticated %}
-       <li>User: {{ user.get_username }}</li>
-       <li><a href="{% url 'profile_page' %}">Profile</a></li>
-       <li><a href="{% url 'logout'%}">Logout</a></li>
-     {% else %}
-	     <li><a href="{% url 'login'%}">Login</a></li>
-	   {% endif %}
-     <hr>
-     <li><a href="{% url 'index' %}">Home</a></li>
+      {% if user.is_authenticated %}
+        <li>User: {{ user.get_username }}</li>
+        <li><a href="{% url 'profile_page' %}">Profile</a></li>
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+      {% else %}
+	      <li><a href="{% url 'login'%}">Login</a></li>
+	    {% endif %}
+      <hr>
+      <li><a href="{% url 'index' %}">Home</a></li>
     </div>
   {% endblock %}
   <div class="pusher">
+      <div id="show-sidebar" class="button">
+        <image src="https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-24.png">
+      </div>
     {% block content %}
     {% endblock %}
   </div>
 </body>
+
 </html>

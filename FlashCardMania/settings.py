@@ -59,7 +59,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'flash_card/templates/flash_card')
+            os.path.join(BASE_DIR, 'flash_card/templates/flash_card'),
+            os.path.join(BASE_DIR, 'flash_card/static/')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -128,4 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIR = (
+    '/flash_card/static/'
+)
 LOGIN_REDIRECT_URL = ''

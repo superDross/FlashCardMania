@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% block title %}
+    <title>FlashMania</title>
+  {% endblock %}
+  {% load static %}
+  <script src="{% static "flash_card/bower_components/jquery/dist/jquery.min.js" %}"></script>
+  <link rel="stylesheet" href="{% static 'flash_card/styles.css' %}">
+
+</head>
+<body>
+  {% block sidebar %}
+    <div class="ui left visible vertical menu sidebar" >
+      <hr>
+      {% if user.is_authenticated %}
+        <li>User: {{ user.get_username }}</li>
+        <li><a href="{% url 'profile_page' %}">Profile</a></li>
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+      {% else %}
+	      <li><a href="{% url 'login'%}">Login</a></li>
+	    {% endif %}
+      <hr>
+      <li><a href="{% url 'index' %}">Home</a></li>
+    </div>
+  {% endblock %}
+  <div class="pusher">
+        <div class="ui container">
+        <!-- BODY -->
+        <button id="left-sidebar-toggle">
+         show sidebar
+        </button>
+
+        <button id="right-sidebar-toggle">
+           show sidebar
+        </button>
+    </div>
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>
+
