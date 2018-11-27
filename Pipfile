@@ -12,6 +12,7 @@ jupyter = "*"
 django-extensions = "*"
 "django-tables2" = "*"
 ipdb = "*"
+pudb = "*"
 
 [dev-packages]
 

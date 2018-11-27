@@ -34,12 +34,12 @@
       <div id="hide-sidebar" class="button">
         <image src="https://cdn3.iconfinder.com/data/icons/32-fufficon/32/32x32_fluffy-03-24.png">
       </div>
-      <a class="item" style="color:black" href="{% url 'index' %}">Home</a>
+      <a class="item" style="color:black" href="{% url 'flash_card:index' %}">Home</a>
       {% if user.is_authenticated %}
         <div class="item">
           <div class="header">User: {{ user.get_username }}</div>
           <div class="menu">
-            <a class="item" href="{% url 'profile_page' %}">Profile</a>
+            <a class="item" href="{% url 'flash_card:profile_page' %}">Profile</a>
             <a class="item" href="{% url 'logout'%}">Logout</a>
           </div>
         </div>
@@ -49,11 +49,11 @@
       <div class="item">
         <div class="header">Cards</div>
         <div class="menu">
-          <a class="item" href="{% url 'card_list' %}">List Cards</a>
-          <a class="item" href="{% url 'card_selection' %}">Filter Cards</a>
+          <a class="item" href="{% url 'flash_card:card_list' %}">List Cards</a>
+          <a class="item" href="{% url 'flash_card:card_selection' %}">Filter Cards</a>
         {% if user.is_authenticated %}
-          <a class="item" href="{% url 'create_card' %}">Create Card</a>
-          <a class="item" href="{% url 'create_category' %}">Create Category</a>
+          <a class="item" href="{% url 'flash_card:create_card' %}">Create Card</a>
+          <a class="item" href="{% url 'flash_card:create_category' %}">Create Category</a>
         {% endif %}
         </div>
       </div>

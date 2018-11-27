@@ -10,4 +10,6 @@ urlpatterns = [
     path('card/selection/', views.card_view_selection, name='card_selection'),
     path('card/list/', views.view_all_cards, name='card_list'),
     path('card/<int:pk>/', views.card_view, name='card_view'),
+    path('game/', views.game_view, name='create_game'),
+    path('game/<uuid:game>/', views.play, name='play'),
 ]

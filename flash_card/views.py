@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpRequest
 
-from .forms import CategoryForm, CardForm, CardViewForm
+from .forms import CategoryForm, CardCreationForm, CardViewForm, CardQuestionForm
 from .qs2table import result_as_table
 from .utils import random_card_color
-from .models import FlashCard, Category
+from .models import FlashCard, Category, GameInstance
+
+import random
 
 
 def index(request):
@@ -20,26 +24,32 @@ def profile_page(request):
                   context={'user': request.user})
 
 
+def card_filtering(request):
+    ''' Filter cards based on form and return cards.'''
+    form = CardViewForm(request.POST)
+    if form.is_valid():
+        category = form.cleaned_data['category']
+        level = form.cleaned_data['level']
+        users = form.cleaned_data['users']
+        card_type = form.cleaned_data['type']
+        cards = FlashCard.objects.filter(category__name__in=category,
+                                         level__in=level,
+                                         created_by__username__in=users,
+                                         type__in=card_type)
+        return cards
+
+
 def card_view_selection(request):
     ''' Produces a card table based off of user
         inputted filtering criteria.
     '''
     if request.method == 'POST':
-        form = CardViewForm(request.POST)
-        if form.is_valid():
-            category = form.cleaned_data['category']
-            level = form.cleaned_data['level']
-            users = form.cleaned_data['users']
-            card_type = form.cleaned_data['type']
-            cards = FlashCard.objects.filter(category__name__in=category,
-                                             level__in=level,
-                                             created_by__username__in=users,
-                                             type__in=card_type)
-            columns = ['id', 'question', 'answer', 'level', 'type']
-            table = result_as_table(cards, fieldnames=columns)
-            return render(request=request,
-                          template_name='flash_card/card_list.html',
-                          context={'table': table})
+        cards = card_filtering(request)
+        columns = ['id', 'question', 'answer', 'level', 'type']
+        table = result_as_table(cards, fieldnames=columns)
+        return render(request=request,
+                      template_name='flash_card/card_list.html',
+                      context={'table': table})
     else:
         return render(request=request,
                       template_name='flash_card/generic_form.html',
@@ -97,7 +107,7 @@ def create_category(request):
 def create_card(request):
     ''' Create a Card model.'''
     if request.method == 'POST':
-        form = CardForm(request.POST, request.FILES)
+        form = CardCreationForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.cleaned_data['question']
             answer = form.cleaned_data['answer']
@@ -129,3 +139,67 @@ def create_card(request):
                       template_name='flash_card/create_form.html',
                       context={'form': CardForm(),
                                'title': 'Card Creation'})
+
+
+def get_random_cards(cards, num=10):
+    ''' Get 10 or less objects from a Card QuerySet.'''
+    random_cards = []
+    n = num if cards.count() > num else cards.count()
+    for _ in range(n):
+        card = random.choice(cards)
+        random_cards.append(card)
+    return random_cards
+
+
+@login_required
+def game_view(request):
+    ''' Creates GameInstance based on player input and
+        redirects to the game.
+    '''
+    if request.method == 'POST':
+        cards = card_filtering(request)
+        cards = get_random_cards(cards)
+        game = GameInstance(participant=request.user,
+                            type='c',
+                            score=0)
+        game.save()
+        for card in cards:
+            game.cards.add(card)
+        game.save()
+        return HttpResponseRedirect(reverse(f'flash_card:play',
+                                            kwargs={'game': game}))
+
+    else:
+        return render(request=request,
+                      template_name='flash_card/generic_form.html',
+                      context={'form': CardViewForm(),
+                               'title': 'Card Selection'})
+
+
+@login_required
+def play(request, game, round_number=0):
+    card = game.cards.all()[round_number]
+    if request.method == 'POST':
+        questions = [x.answer for x in get_random_cards(game.cards.all(), 4)]
+        form = CardQuestionForm(request.POST, choices=questions)
+        if form.is_valid():
+            answer = form.cleaned_data['answer']
+            if answer == card.answer:
+                game.score += 1
+            if round_number < game.cards.count():
+                round_number += 1
+                return HttpResponseRedirect(
+                    reverse('flash_card:play', kwargs={'game': game,
+                                                       'round_number': round_number})
+                )
+            else:
+                # convert game score to percentage
+                game.score = int(game.score / game.cards.count())
+                # render score page
+                pass
+
+    else:
+        return render(request=request,
+                      context={'form': CardQuestionForm(),
+                               'title': 'Play',
+                               'game': game})

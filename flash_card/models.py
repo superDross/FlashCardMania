@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
+
 
 
 class Category(models.Model):
@@ -73,8 +75,7 @@ class GameInstance(models.Model):
                                     on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True)
-    date = models.DateField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
+    date = models.DateTimeField(null=True, blank=True, default=timezone.now())
     cards = models.ManyToManyField(FlashCard,
                                    help_text='all cards used in game.')
     score = models.IntegerField(
@@ -92,4 +93,4 @@ class GameInstance(models.Model):
     )
 
     def __str__(self):
-        return f'{self.participant.username} - {self.date}, {self.time}'
+        return f'{self.participant.username} - {self.date}'

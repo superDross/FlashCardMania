@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('flash_card.urls')),
+    path('', include(('flash_card.urls', 'flash_card'),
+                     namespace='flash_card')),
     path('accounts/', include('django.contrib.auth.urls'))
 ]
