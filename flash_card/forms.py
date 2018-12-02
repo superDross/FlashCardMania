@@ -17,7 +17,7 @@ class CardCreationForm(forms.Form):
     image = forms.ImageField(required=False)
     audio = forms.FileField(required=False)
     category = forms.ModelChoiceField(queryset=Category.objects.all())
-    template_name = 'flash_card/create_form.html'
+    template_name = 'flash_card/generic_form.html'
 
 
 class CardViewForm(forms.Form):
@@ -44,13 +44,3 @@ class CardViewForm(forms.Form):
             if value:
                 d[key] = value
         return d
-
-
-class CardQuestionForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        choices = kwargs.pop('choices')
-        super().__init__(*args, **kwargs)
-        self.fields['answers'].choices = choices
-
-    answer = forms.MultipleChoiceField(required=True)
-    template_name = 'flash_card/begin_game.html',

@@ -133,6 +133,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = (
     '/flash_card/static/'
 )
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = ''
 
 MEDIA_ROOT = '/home/david/'

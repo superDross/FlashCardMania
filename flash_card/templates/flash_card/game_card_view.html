@@ -1,0 +1,35 @@
+{% extends 'generic_card_view.html' %}
+
+{% block script %}
+
+<script type="text/javascript">
+// toggle answer appearance in flash card
+function toggleAnswer() {
+  var x = document.getElementById("show-answer");
+  if (x.style.display === "none") {
+      x.style.display = "block";
+  } else {
+      x.style.display = "none";
+  }
+} 
+</script>
+
+{% endblock %}
+
+
+{% block answer %}
+<p id="show-answer" style="display:none;">
+  Answer:  {{ card.answer }}
+</p>
+{% endblock %}
+
+{% block buttons %}
+
+<button onclick="toggleAnswer()" class="ui primary button">
+  Answer
+</button>
+
+<a href="{% url 'flash_card:game_card_view' %}" class="ui button">
+  Next Card
+</a>
+{% endblock %}

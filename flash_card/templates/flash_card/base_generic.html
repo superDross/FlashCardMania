@@ -26,6 +26,8 @@
     }
     $(document).ready(main);
   </script>
+  {% block script %}
+  {% endblock %}
 </head>
 
 <body>
@@ -37,7 +39,7 @@
       <a class="item" style="color:black" href="{% url 'flash_card:index' %}">Home</a>
       {% if user.is_authenticated %}
         <div class="item">
-          <div class="header">User: {{ user.get_username }}</div>
+          <div class="header">{{ user.get_username }}</div>
           <div class="menu">
             <a class="item" href="{% url 'flash_card:profile_page' %}">Profile</a>
             <a class="item" href="{% url 'logout'%}">Logout</a>
@@ -46,6 +48,14 @@
       {% else %}
 	      <a class="item" href="{% url 'login'%}">Login</a>
 	    {% endif %}
+      {% if user.is_authenticated %}
+        <div class="item">
+          <div class="header">Game</div>
+          <div class="menu">
+            <a class="item" href="{% url 'flash_card:game_form' %}">Play</a>
+          </div>
+        </div>
+      {% endif %}
       <div class="item">
         <div class="header">Cards</div>
         <div class="menu">
