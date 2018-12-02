@@ -6,7 +6,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
 
-
 class Category(models.Model):
     ''' A category of FlashCards e.g. Spanish'''
 
@@ -16,6 +15,7 @@ class Category(models.Model):
                                    on_delete=models.SET_NULL,
                                    null=True,
                                    blank=True)
+
     def __str__(self):
         return self.name
 
@@ -29,6 +29,19 @@ class FlashCard(models.Model):
         ('s', 'Short'),
         ('l', 'Long'),
     )
+
+    COLOURS = {
+        1: '#d7ffbb',  # green
+        2: '#AAFFEE',  # aqua
+        3: '#cfe3ff',  # blue
+        4: '#d4d0ff',  # lilac
+        5: '#ffc0cb',  # pink
+        6: '#ff7169',  # red
+        7: '#FFD394',  # orange
+        8: '#FDFD96',  # yellow
+        9: '#FFFFFF',  # white
+        10: '#c0c0c0'  # silver
+    }
 
     created_by = models.ForeignKey(User,
                                    on_delete=models.SET_NULL,
@@ -46,11 +59,15 @@ class FlashCard(models.Model):
                               null=True,
                               help_text='image representation of the question.')
     audio = models.FileField(upload_to='tmp/',
-                              blank=True,
-                              null=True,
+                             blank=True,
+                             null=True,
                              help_text='audio representation of the question.')
     level = models.IntegerField(choices=LEVELS,
                                 help_text='difficulty level.')
+    colour = models.CharField(max_length=20,
+                              null=True,
+                              blank=True,
+                              help_text='colour of flash card.')
     type = models.CharField(
         max_length=20,
         choices=TYPES,
@@ -59,6 +76,12 @@ class FlashCard(models.Model):
 
     def __str__(self):
         return f'{self.pk}'
+
+    def save(self, *args, **kwargs):
+        # set colour based upon level
+        colour = self.COLOURS.get(int(self.level))
+        self.colour = colour
+        super().save(self, *args, **kwargs)
 
 
 class GameInstance(models.Model):
