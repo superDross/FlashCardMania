@@ -14,8 +14,8 @@ class CardCreationForm(forms.Form):
     answer = forms.CharField(max_length=200)
     level = forms.ChoiceField(choices=FlashCard.LEVELS)
     type = forms.ChoiceField(choices=FlashCard.TYPES)
-    image = forms.ImageField()
-    audio = forms.FileField()
+    image = forms.ImageField(required=False)
+    audio = forms.FileField(required=False)
     category = forms.ModelChoiceField(queryset=Category.objects.all())
     template_name = 'flash_card/create_form.html'
 
